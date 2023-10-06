@@ -1,0 +1,64 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Category {
+    id     String  @id @default(uuid())
+    name   String
+    Brains Brain[]
+}
+
+model Brain {
+    id           String @id @default(uuid())
+    userId       String
+    userName     String
+    src          String
+    name         String @db.Text
+    description  String
+    instructions String @db.Text
+    seed         String @db.Text
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    category   Category @relation(fields: [categoryId], references: [id])
+    categoryId String
+
+    messages Message[]
+
+    @@index([categoryId])
+}
+
+enum Role {
+    user
+    system
+}
+
+model Message {
+    id        String   @id @default(uuid())
+    role      Role
+    content   String   @db.Text
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    brainId String
+    userId  String
+
+    Brain Brain @relation(fields: [brainId], references: [id], onDelete: Cascade)
+
+    @@index([brainId])
+}
+
+model UserSubscription {
+    id                     String    @id @default(cuid())
+    userId                 String    @unique
+    stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+    stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+    stripePriceId          String?   @map(name: "stripe_price_id")
+    stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+}
