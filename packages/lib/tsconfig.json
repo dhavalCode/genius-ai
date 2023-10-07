@@ -7,7 +7,7 @@
     "../../apps/web/next-env.d.ts",
     "../types/*.d.ts",
     "../types/next-auth.d.ts",
-    "**/*.ts",
+    "**/*.ts", 
     "**/*.tsx"
   ],
   "exclude": ["dist", "build", "node_modules"]

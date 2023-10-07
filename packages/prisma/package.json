@@ -1,5 +1,5 @@
 {
-  "name": "prisma",
+  "name": "@genius-ai/prisma",
   "version": "0.0.0",
   "private": true,
   "main": "index.ts",
