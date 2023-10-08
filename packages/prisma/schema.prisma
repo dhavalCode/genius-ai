@@ -7,6 +7,23 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum IdentityProvider {
+    EMAIL
+    GOOGLE
+}
+
+model User {
+    id               String            @id @default(uuid())
+    name             String?
+    email            String            @unique
+    emailVerified    DateTime?
+    password         String?
+    identityProvider IdentityProvider  @default(EMAIL)
+    Brain            Brain[]
+    Message          Message[]
+    UserSubscription UserSubscription?
+}
+
 model Category {
     id     String  @id @default(uuid())
     name   String
@@ -22,16 +39,18 @@ model Brain {
     description  String
     instructions String @db.Text
     seed         String @db.Text
+    categoryId   String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    category   Category @relation(fields: [categoryId], references: [id])
-    categoryId String
+    category Category @relation(fields: [categoryId], references: [id])
+    user     User     @relation(fields: [userId], references: [id])
 
     messages Message[]
 
     @@index([categoryId])
+    @@index([userId])
 }
 
 enum Role {
@@ -50,8 +69,10 @@ model Message {
     userId  String
 
     Brain Brain @relation(fields: [brainId], references: [id], onDelete: Cascade)
+    user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([brainId])
+    @@index([userId])
 }
 
 model UserSubscription {
@@ -61,4 +82,8 @@ model UserSubscription {
     stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
     stripePriceId          String?   @map(name: "stripe_price_id")
     stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
