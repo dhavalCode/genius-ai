@@ -7,11 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@genius-ai/lib": "*",
     "@genius-ai/tsconfig": "*",
     "@genius-ai/prisma": "*",
     "bcryptjs": "^2.4.3",
-    "@prisma/client": "^4.8.1",
     "tailwind-merge": "^1.14.0"
   },
   "devDependencies": {

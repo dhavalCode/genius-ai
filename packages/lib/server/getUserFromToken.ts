@@ -1,4 +1,8 @@
-import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next";
+import {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 import { NextRequest } from "next/server";
 import prisma from "@genius-ai/prisma";
 import { User as PrismaUser } from "@prisma/client";
