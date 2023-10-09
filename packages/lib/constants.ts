@@ -1,0 +1,1 @@
+export const NEXT_PUBLIC_WEBAPP_URL = "http://localhost:3000"

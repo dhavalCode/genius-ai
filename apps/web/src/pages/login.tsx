@@ -1,13 +1,14 @@
 import Head from "next/head";
 import { getUserFromToken } from "@genius-ai/lib/server";
+import Login from "../components/Login";
 
-export default function LoginPage(_props: any) {
+export default function LoginPage() {
   return (
     <>
       <Head>
         <title>Login | Genius ai</title>
       </Head>
-      <h1>Login </h1>
+      <Login />
     </>
   );
 }

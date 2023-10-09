@@ -8,7 +8,8 @@
     "db-seed": "prisma db seed",
     "db-migrate:deploy": "prisma migrate deploy",
     "db-migrate:dev": "prisma migrate dev",
-    "db-push": "prisma db push"
+    "db-push": "prisma db push",
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.4.1",
