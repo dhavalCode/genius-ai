@@ -1,9 +1,16 @@
+import type { ReactElement } from 'react'
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
 
+import Layout from '@/components/Layout';
+
 function HomePage() {
-  return;
+  return <></>;
 }
+
+HomePage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
