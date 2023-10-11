@@ -1,7 +1,8 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
 
 import { classNames } from "@genius-ai/lib/utils";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -10,8 +11,10 @@ export default function Document() {
     <Html lang="en" className={classNames("bg-secondary")}>
       <Head />
       <body>
-        <Main />
-        <NextScript />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <Main />
+          <NextScript />
+        </ThemeProvider>
       </body>
     </Html>
   );

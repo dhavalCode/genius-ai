@@ -31,7 +31,7 @@ export default function Signup(props: { source: string }) {
       .then(async () => {
         await signIn<"credentials">("credentials", {
           ...data,
-          callbackUrl: `${NEXT_PUBLIC_WEBAPP_URL}/dashboard`,
+          callbackUrl: `${NEXT_PUBLIC_WEBAPP_URL}`,
         });
       })
       .catch((err) => {

@@ -24,5 +24,5 @@ export async function getServerSideProps(context: any) {
       },
     };
 
-  return null;
+  return { props: {} };
 }

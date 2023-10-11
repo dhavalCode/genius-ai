@@ -4,7 +4,8 @@ import { Sparkles } from "lucide-react";
 
 import { classNames } from "@genius-ai/lib/utils";
 import MobileSidebar from "@/components/MobileSidebar";
-import { ModeToggle } from "@/components/mode-toggle";
+import { ModeToggle } from "@/components/ModeToggle";
+
 import { Button } from "@genius-ai/ui";
 
 const font = Poppins({ weight: "600", subsets: ["latin"] });
@@ -32,7 +33,7 @@ const Navbar = ({ isPro }: NavbarProps) => {
       </div>
       <div className="flex items-center gap-x-3">
         {!isPro && (
-          <Button onClick={proModal.onOpen} size="sm" variant="premium">
+          <Button onClick={()=>{}} size="sm" variant="premium">
             Upgrade
             <Sparkles className="h-4 w-4 fill-white text-white ml-2" />
           </Button>

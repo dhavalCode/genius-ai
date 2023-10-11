@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const sharedConfig = require("tailwindconfig");
+const sharedConfig = require("@genius-ai/tailwindconfig");
 module.exports = {
   ...sharedConfig,
   content: [
