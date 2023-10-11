@@ -1,11 +1,9 @@
-"use client";
-
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { Sparkles } from "lucide-react";
 
 import { classNames } from "@genius-ai/lib/utils";
-import { MobileSidebar } from "@/components/mobile-sidebar";
+import MobileSidebar from "@/components/MobileSidebar";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@genius-ai/ui";
 
@@ -15,7 +13,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isPro }: NavbarProps) => {
-  const proModal = useProModal();
+  // const proModal = useProModal();
 
   return (
     <div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 h-16 border-b border-primary/10 bg-secondary">

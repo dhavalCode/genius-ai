@@ -5,6 +5,7 @@ const nextConfig = {
     "@genus-ai/prisma",
     "@genus-ai/lib",
     "@genus-ai/ui",
+    "@genus-ai/tailwindconfig"
   ],
 }
 
