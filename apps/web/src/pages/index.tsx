@@ -6,7 +6,8 @@ import prisma from "@genius-ai/prisma";
 
 import Layout from "@/components/Layout";
 import { Categories } from "@/components/Categories";
-
+import { SearchInput } from "@/components/SearchInput";
+import { Brains } from "../components/Brains";
 
 type HomeProps = {
   categories: Category[];
@@ -18,6 +19,7 @@ function HomePage({ categories }: HomeProps) {
       <div className="h-full p-4 space-y-2">
         <SearchInput />
         <Categories data={categories} />
+        <Brains data={[]} />
       </div>
     </Layout>
   );
@@ -30,7 +32,7 @@ export async function getServerSideProps(context: NextPageContext) {
     return { redirect: { permanent: false, destination: "/login" } };
   }
 
-  const data = await prisma.brain.findMany({
+  /* const data = await prisma.brain.findMany({
     where: {
       categoryId: searchParams.categoryId,
       name: {
@@ -47,11 +49,11 @@ export async function getServerSideProps(context: NextPageContext) {
         },
       },
     },
-  });
+  }); */
 
   const categories = await prisma.category.findMany();
 
-  return { props: { data, categories } };
+  return { props: { categories } };
 }
 
 export default HomePage;
