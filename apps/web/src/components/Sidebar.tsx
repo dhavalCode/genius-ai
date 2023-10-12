@@ -26,7 +26,7 @@ const Sidebar = ({ isPro }: SidebarProps) => {
     },
     {
       icon: Plus,
-      href: "/companion/new",
+      href: "/brain/new",
       label: "Create",
       pro: true,
     },

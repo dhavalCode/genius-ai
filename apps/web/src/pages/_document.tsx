@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import { classNames } from "@genius-ai/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
+import { Toaster } from "@genius-ai/ui";
+
 export default function Document() {
   return (
     <Html lang="en" className={classNames("bg-secondary")}>
@@ -11,6 +13,7 @@ export default function Document() {
       <body>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Main />
+          <Toaster />
           <NextScript />
         </ThemeProvider>
       </body>
