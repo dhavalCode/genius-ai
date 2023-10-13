@@ -5,8 +5,11 @@ const nextConfig = {
     "@genus-ai/prisma",
     "@genus-ai/lib",
     "@genus-ai/ui",
-    "@genus-ai/tailwindconfig"
+    "@genus-ai/tailwindconfig",
   ],
-}
+  images: {
+    domains: ["res.cloudinary.com"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

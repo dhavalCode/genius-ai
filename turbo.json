@@ -4,7 +4,9 @@
     "**/.env.*local"
   ],
   "globalEnv": [
-    "DATABASE_URL"
+    "DATABASE_URL",
+    "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_UPLOAD_PRESET"
   ],
   "pipeline": {
     "dev": {

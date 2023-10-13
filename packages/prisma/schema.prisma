@@ -19,15 +19,20 @@ model User {
     emailVerified    DateTime?
     password         String?
     identityProvider IdentityProvider  @default(EMAIL)
+    
     Brain            Brain[]
     Message          Message[]
     UserSubscription UserSubscription?
+    Category         Category[]
 }
 
 model Category {
     id     String  @id @default(uuid())
     name   String
+    userId String
     Brains Brain[]
+
+    user User @relation(fields: [userId], references: [id])
 }
 
 model Brain {

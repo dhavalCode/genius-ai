@@ -15,8 +15,11 @@ export const ImageUpload = ({
 }: ImageUploadProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
+  const [uploadPreset, setUploadPreset] = useState("");
+
   useEffect(() => {
     setIsMounted(true);
+    setUploadPreset(process.env.CLOUDINARY_UPLOAD_PRESET ?? "");
   }, []);
 
   if (!isMounted) {
@@ -25,9 +28,12 @@ export const ImageUpload = ({
 
   return (
     <div className="space-y-4 w-full flex flex-col justify-center items-center">
-      
-      <CldUploadButton options={{ maxFiles: 1 }} onUpload={(result: any) => onChange(result.info.secure_url)} uploadPreset="t4drjppf">
-        <div 
+      <CldUploadButton
+        options={{ maxFiles: 1 }}
+        onUpload={(result: any) => onChange(result.info.secure_url)}
+        uploadPreset={uploadPreset}
+      >
+        <div
           className="
             p-4 
             border-4 

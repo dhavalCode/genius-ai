@@ -32,25 +32,6 @@ export async function getServerSideProps(context: NextPageContext) {
     return { redirect: { permanent: false, destination: "/login" } };
   }
 
-  /* const data = await prisma.brain.findMany({
-    where: {
-      categoryId: searchParams.categoryId,
-      name: {
-        search: searchParams.name,
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      _count: {
-        select: {
-          messages: true,
-        },
-      },
-    },
-  }); */
-
   const categories = await prisma.category.findMany();
 
   return { props: { categories } };

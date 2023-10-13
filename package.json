@@ -1,12 +1,15 @@
 {
   "private": true,
+  "name": "genius-ai",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "db:migrate:deploy": "turbo run db:migrate:deploy",
-    "db:push": "turbo run db:push",
-    "db:seed": "turbo run db:seed",
-    "generate": "turbo run generate",
+    "db-studio": "prisma studio",
+    "db-seed": "prisma db seed",
+    "db-migrate:deploy": "prisma migrate deploy",
+    "db-migrate:dev": "prisma migrate dev",
+    "db-push": "prisma db push",
+    "generate": "prisma generate",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -22,10 +25,13 @@
     "prettier": "^3.0.3",
     "turbo": "latest"
   },
-  "name": "next-ai",
   "packageManager": "npm@8.19.2",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "prisma": {
+    "schema": "packages/prisma/schema.prisma",
+    "seed": "ts-node --transpile-only ./packages/prisma/seed.ts"
+  }
 }
