@@ -1,12 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local"
-  ],
   "globalEnv": [
     "DATABASE_URL",
     "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME",
-    "CLOUDINARY_UPLOAD_PRESET"
+    "NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET"
   ],
   "pipeline": {
     "dev": {

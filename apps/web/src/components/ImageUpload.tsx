@@ -14,12 +14,10 @@ export const ImageUpload = ({
   disabled,
 }: ImageUploadProps) => {
   const [isMounted, setIsMounted] = useState(false);
-
-  const [uploadPreset, setUploadPreset] = useState("");
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   useEffect(() => {
     setIsMounted(true);
-    setUploadPreset(process.env.CLOUDINARY_UPLOAD_PRESET ?? "");
   }, []);
 
   if (!isMounted) {
