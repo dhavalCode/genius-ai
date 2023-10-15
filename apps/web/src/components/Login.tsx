@@ -5,6 +5,7 @@ import { NEXT_PUBLIC_WEBAPP_URL } from "@genius-ai/lib/constants";
 // import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { signIn } from "next-auth/react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useToast } from "@genius-ai/lib/hooks";
 
 interface LoginValues {
   email: string;
@@ -16,6 +17,7 @@ interface LoginValues {
 export default function Login() {
   const router = useRouter();
   const methods = useForm<LoginValues>();
+  const { toast } = useToast();
   const { register, formState } = methods;
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   let callbackUrl =
@@ -41,11 +43,21 @@ export default function Login() {
       // we're logged in, let's do a hard refresh to the original url
       router.push(callbackUrl);
     } else {
-      // TODO Add Tost here
       if (res.status == 401) {
+        toast({
+          variant: "destructive",
+          description: "Invalid email or password.",
+          duration: 3000,
+        });
+
         // toast.error("Invalid email or password.");
       } else {
         // toast.error("Could not login.");
+        toast({
+          variant: "destructive",
+          description: "Could not login.",
+          duration: 3000,
+        });
       }
     }
   };
@@ -115,7 +127,7 @@ export default function Login() {
                   className="group relative flex w-full"
                 >
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                    {/*  <LockClosedIcon
+                    {/* <LockClosedIcon
                       className="text-neon-700 group-hover:text-neon-dark-700 h-5 w-5 duration-200 disabled:disabled:bg-gray-600 disabled:group-hover:bg-gray-600"
                       aria-hidden="true"
                     /> */}
@@ -147,7 +159,6 @@ export default function Login() {
           </FormProvider>
         </div>
       </div>
-      {/* <Toaster position="top-center" /> */}
     </>
   );
 }

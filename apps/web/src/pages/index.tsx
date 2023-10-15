@@ -1,25 +1,25 @@
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
-import { Category } from "@prisma/client";
+import { Brain, Category } from "@prisma/client";
+import { getBrains, getCategories } from "@genius-ai/lib/query";
 
-import prisma from "@genius-ai/prisma";
-
+import { Brains } from "@/components/Brains";
 import Layout from "@/components/Layout";
 import { Categories } from "@/components/Categories";
 import { SearchInput } from "@/components/SearchInput";
-import { Brains } from "../components/Brains";
 
 type HomeProps = {
   categories: Category[];
+  brains: Brain[];
 };
 
-function HomePage({ categories }: HomeProps) {
+function HomePage({ categories, brains }: HomeProps) {
   return (
     <Layout>
       <div className="h-full p-4 space-y-2">
         <SearchInput />
         <Categories data={categories} />
-        <Brains data={[]} />
+        <Brains data={brains} />
       </div>
     </Layout>
   );
@@ -32,9 +32,11 @@ export async function getServerSideProps(context: NextPageContext) {
     return { redirect: { permanent: false, destination: "/login" } };
   }
 
-  const categories = await prisma.category.findMany();
+  const categories = await getCategories(context.req, context.res);
 
-  return { props: { categories } };
+  const brains = await getBrains(context.req, context.res);
+
+  return { props: { categories, brains: JSON.parse(JSON.stringify(brains)) } };
 }
 
 export default HomePage;

@@ -33,12 +33,13 @@ model Category {
     Brains Brain[]
 
     user User @relation(fields: [userId], references: [id])
+
+    @@index([userId])   
 }
 
 model Brain {
     id           String @id @default(uuid())
     userId       String
-    userName     String
     src          String
     name         String @db.Text
     description  String

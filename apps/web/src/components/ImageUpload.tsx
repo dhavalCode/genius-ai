@@ -2,6 +2,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CldUploadButton } from "next-cloudinary";
 
+import placeHolderImg from "@/assets/placeholder.svg";
+
 interface ImageUploadProps {
   value: string;
   onChange: (src: string) => void;
@@ -51,7 +53,7 @@ export const ImageUpload = ({
             <Image
               fill
               alt="Upload"
-              src={value || "/placeholder.svg"}
+              src={value || placeHolderImg}
               className="rounded-lg object-cover"
             />
           </div>

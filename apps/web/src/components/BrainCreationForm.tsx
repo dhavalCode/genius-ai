@@ -1,7 +1,8 @@
-import * as z from "zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { brainCreationSchema } from "@genius-ai/lib/validations";
+import type { BrainCreationType } from "@genius-ai/lib/validations";
 import { useRouter } from "next/navigation";
 import { Wand2 } from "lucide-react";
 import { Category, Brain } from "@prisma/client";
@@ -22,7 +23,7 @@ import {
   Input,
   Textarea,
   Button,
-  Separator
+  Separator,
 } from "@genius-ai/ui";
 import { useToast } from "@genius-ai/lib/hooks";
 
@@ -44,27 +45,6 @@ Human: It's fascinating to see your vision unfold. Any new projects or innovatio
 Elon: Always! But right now, I'm particularly excited about Neuralink. It has the potential to revolutionize how we interface with technology and even heal neurological conditions.
 `;
 
-const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required.",
-  }),
-  description: z.string().min(1, {
-    message: "Description is required.",
-  }),
-  instructions: z.string().min(200, {
-    message: "Instructions require at least 200 characters.",
-  }),
-  seed: z.string().min(200, {
-    message: "Seed requires at least 200 characters.",
-  }),
-  src: z.string().min(1, {
-    message: "Image is required.",
-  }),
-  categoryId: z.string().min(1, {
-    message: "Category is required",
-  }),
-});
-
 interface BrainCreationFormProps {
   categories: Category[];
   initialData: Brain | null;
@@ -77,8 +57,8 @@ export const BrainCreationForm = ({
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<BrainCreationType>({
+    resolver: zodResolver(brainCreationSchema),
     defaultValues: initialData || {
       name: "",
       description: "",
@@ -88,10 +68,10 @@ export const BrainCreationForm = ({
       categoryId: undefined,
     },
   });
-
+  
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: BrainCreationType) => {
     try {
       if (initialData) {
         await axios.patch(`/api/brain/${initialData.id}`, values);
@@ -100,11 +80,9 @@ export const BrainCreationForm = ({
       }
 
       toast({
-        description: "Success.",
+        description: "Brain successfully created.",
         duration: 3000,
       });
-
-      router.refresh();
       router.push("/");
     } catch (error) {
       toast({
@@ -248,8 +226,8 @@ export const BrainCreationForm = ({
                   />
                 </FormControl>
                 <FormDescription>
-                  Describe in detail your brain&apos;s backstory and
-                  relevant details.
+                  Describe in detail your brain&apos;s backstory and relevant
+                  details.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -273,7 +251,7 @@ export const BrainCreationForm = ({
                 <FormDescription>
                   Write couple of examples of a human chatting with your AI
                   brain, write expected answers.
-                </FormDescription>  
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

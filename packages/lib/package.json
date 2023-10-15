@@ -10,7 +10,10 @@
     "@genius-ai/tsconfig": "*",
     "@genius-ai/prisma": "*",
     "bcryptjs": "^2.4.3",
-    "tailwind-merge": "^1.14.0"
+    "tailwind-merge": "^1.14.0",
+    "zod": "^3.22.4",
+    "@prisma/client": "^5.4.1",
+    "prisma": "^5.4.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.4",

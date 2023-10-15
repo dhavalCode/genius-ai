@@ -32,7 +32,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 
   const hashedPassword = await hashPassword(password);
 
-  await prisma.user.upsert({
+  const user = await prisma.user.upsert({
     where: { email: cleanEmail },
     update: {
       password: hashedPassword,
@@ -46,6 +46,23 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
       emailVerified: new Date(Date.now()),
     },
   });
+
+  // create one default category
+
+  const found = await prisma.category.findFirst({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  if (!found) {
+    await prisma.category.create({
+      data: {
+        name: "General",
+        userId: user.id,
+      },
+    });
+  }
 
   res.status(201).end();
 }
