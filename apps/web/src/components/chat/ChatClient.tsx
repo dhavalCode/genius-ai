@@ -50,7 +50,7 @@ const ChatClient = ({ brain }: ChatClientProps) => {
 
   return (
     <div className="flex flex-col h-full p-4 space-y-2">
-      <ChatHeader companion={brain} />
+      <ChatHeader brain={brain} />
       <ChatMessages brain={brain} isLoading={isLoading} messages={messages} />
       <ChatForm
         isLoading={isLoading}

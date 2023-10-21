@@ -11,11 +11,11 @@ import EmptyImg from "@/assets/empty.png";
 import { useSearchParams } from "next/navigation";
 import { BrainCustomType } from "@genius-ai/lib/query";
 
-interface CompanionsProps {
+interface BrainsProps {
   data: BrainCustomType[];
 }
 
-export const Brains = ({ data }: CompanionsProps) => {
+export const Brains = ({ data }: BrainsProps) => {
   const [filterData, setFilterData] = useState<BrainCustomType[]>([]);
 
   const searchParams = useSearchParams();

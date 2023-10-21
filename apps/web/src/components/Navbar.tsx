@@ -27,7 +27,7 @@ const Navbar = ({ isPro }: NavbarProps) => {
               font.className
             )}
           >
-            companion.ai
+            Genius.ai
           </h1>
         </Link>
       </div>

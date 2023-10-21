@@ -28,6 +28,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
     "react-spinners": "^0.13.8",
+    "replicate": "^0.18.1",
+    "langchain": "^0.0.170",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.6",
     "zod": "^3.22.4"

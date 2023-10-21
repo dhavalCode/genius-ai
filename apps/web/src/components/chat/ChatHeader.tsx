@@ -21,7 +21,7 @@ import BotAvatar from "./BotAvatar";
 import { useToast } from "@genius-ai/lib/hooks";
 
 interface ChatHeaderProps {
-  companion: Brain & {
+  brain: Brain & {
     messages: Message[];
     _count: {
       messages: number;
@@ -29,15 +29,15 @@ interface ChatHeaderProps {
   };
 }
 
-const ChatHeader = ({ companion }: ChatHeaderProps) => {
+const ChatHeader = ({ brain }: ChatHeaderProps) => {
   const router = useRouter();
   const { toast } = useToast();
 
   const onDelete = async () => {
     try {
-      await axios.delete(`/api/companion/${companion.id}`);
+      await axios.delete(`/api/brain/${brain.id}`);
       toast({
-        description: "Success.",
+        description: "Successfully deleted.",
       });
       router.refresh();
       router.push("/");
@@ -55,17 +55,12 @@ const ChatHeader = ({ companion }: ChatHeaderProps) => {
         <Button onClick={() => router.back()} size="icon" variant="ghost">
           <ChevronLeft className="h-8 w-8" />
         </Button>
-        <BotAvatar src={companion.src} />
+        <BotAvatar src={brain.src} />
         <div className="flex flex-col gap-y-1">
           <div className="flex items-center gap-x-2">
-            <p className="font-bold">{companion.name}</p>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <MessagesSquare className="w-3 h-3 mr-1" />
-              {companion._count.messages}
-            </div>
+            <p className="font-bold">{brain.name}</p>
           </div>
-          {/* TODO  */}
-          <p className="text-xs text-muted-foreground">Created by ME</p>
+          <p className="text-xs text-muted-foreground">{brain.description}</p>
         </div>
       </div>
       <DropdownMenu>
@@ -75,9 +70,7 @@ const ChatHeader = ({ companion }: ChatHeaderProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            onClick={() => router.push(`/companion/${companion.id}`)}
-          >
+          <DropdownMenuItem onClick={() => router.push(`/brain/${brain.id}`)}>
             <Edit className="w-4 h-4 mr-2" />
             Edit
           </DropdownMenuItem>
