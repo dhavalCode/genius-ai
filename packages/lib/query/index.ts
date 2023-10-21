@@ -1,7 +1,8 @@
 export { getCategories } from "./getCategories";
-export { getBrainData } from "./getBrainData";
+export { getBrainData, getBrainDataWithMessages } from "./getBrainData";
 export { getBrains } from "./getBrains";
 
 // types
 
 export type { BrainCustomType } from "./getBrains";
+export type { BrainWithMessagesType } from "./getBrainData";

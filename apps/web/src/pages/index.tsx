@@ -1,7 +1,11 @@
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
-import { Brain, Category } from "@prisma/client";
-import { getBrains, getCategories } from "@genius-ai/lib/query";
+import { Category } from "@prisma/client";
+import {
+  BrainCustomType,
+  getBrains,
+  getCategories,
+} from "@genius-ai/lib/query";
 
 import { Brains } from "@/components/Brains";
 import Layout from "@/components/Layout";
@@ -10,7 +14,7 @@ import { SearchInput } from "@/components/SearchInput";
 
 type HomeProps = {
   categories: Category[];
-  brains: Brain[];
+  brains: BrainCustomType[];
 };
 
 function HomePage({ categories, brains }: HomeProps) {
