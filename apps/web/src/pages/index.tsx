@@ -3,6 +3,7 @@ import { getSession } from "next-auth/react";
 import { Category } from "@prisma/client";
 import {
   BrainCustomType,
+  checkSubscription,
   getBrains,
   getCategories,
 } from "@genius-ai/lib/query";
@@ -15,11 +16,12 @@ import { SearchInput } from "@/components/SearchInput";
 type HomeProps = {
   categories: Category[];
   brains: BrainCustomType[];
+  isPro: boolean;
 };
 
-function HomePage({ categories, brains }: HomeProps) {
+function HomePage({ categories, brains, isPro }: HomeProps) {
   return (
-    <Layout>
+    <Layout isPro={isPro}>
       <div className="h-full p-4 space-y-2">
         <SearchInput />
         <Categories data={categories} />
@@ -40,7 +42,11 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const brains = await getBrains(context.req, context.res);
 
-  return { props: { categories, brains: JSON.parse(JSON.stringify(brains)) } };
+  const isPro = await checkSubscription(context.req, context.res);
+
+  return {
+    props: { categories, brains: JSON.parse(JSON.stringify(brains)), isPro },
+  };
 }
 
 export default HomePage;

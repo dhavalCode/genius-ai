@@ -11,4 +11,5 @@ export * from "./components/Separator";
 export * from "./components/Textarea";
 export * from "./components/Toast";
 export * from "./components/Toaster";
+export * from "./components/Dialog";
 
