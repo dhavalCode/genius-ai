@@ -2,6 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
     "DATABASE_URL",
+    "NEXT_PUBLIC_APP_URL",
     "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME",
     "NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET",
     "NEXTAUTH_URL",
@@ -12,7 +13,9 @@
     "PINECONE_API_KEY",
     "PINECONE_ENVIRONMENT",
     "PINECONE_INDEX",
-    "REPLICATE_API_TOKEN"
+    "REPLICATE_API_TOKEN",
+    "STRIPE_API_KEY",
+    "STRIPE_WEBHOOK_SECRET"
   ],
   "pipeline": {
     "dev": {
