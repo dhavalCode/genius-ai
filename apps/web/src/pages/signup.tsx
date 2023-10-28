@@ -1,13 +1,30 @@
-import Link from "next/link";
-import { NEXT_PUBLIC_WEBAPP_URL } from "@genius-ai/lib/constants";
-import { signIn } from "next-auth/react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
+import Link from "next/link";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { signIn } from "next-auth/react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import { NEXT_PUBLIC_WEBAPP_URL } from "@genius-ai/lib/constants";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  Input,
+  Button,
+} from "@genius-ai/ui";
+
+import logoSvgImg from "@/assets/ai-logo.svg";
+import googleSvgImg from "@/assets/google.svg";
+import githubSvgImg from "@/assets/github.svg";
+import githubWhiteSvgImg from "@/assets/github-white.svg";
 
 type FormValues = {
   email: string;
   password: string;
   apiError: string;
+  name: string;
 };
 
 export default function Signup(props: { source: string }) {
@@ -17,6 +34,8 @@ export default function Signup(props: { source: string }) {
     trigger,
     formState: { errors, isSubmitting },
   } = form;
+
+  const { theme } = useTheme();
 
   /* const handleErrors = async (resp: Response) => {
     if (!resp.ok) {
@@ -80,114 +99,189 @@ export default function Signup(props: { source: string }) {
   }
 
   return (
-    <>
-      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Create a shiny, new
-              <svg
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="rgb(17 24 39 / var(--tw-text-opacity))"
-                className="mb-1 inline h-8 w-8"
+    <section className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <p className="flex items-center mb-6 text-3xl font-semibold text-gray-900 dark:text-white">
+          <Image className="w-8 h-8 mr-2" src={logoSvgImg} alt="logo" />
+          Genius AI
+        </p>
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Create your account
+            </h1>
+            <Form {...form}>
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={form.handleSubmit(signUp)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"
-                />
-              </svg>
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
-              Create your account and start using<br></br>
-            </p>
-          </div>
-          {renderApiError()}
-          {renderFormValidation()}
-          <FormProvider {...form}>
-            <form
-              onSubmit={form.handleSubmit(signUp)}
-              onChange={() => {
-                form.clearErrors();
-                trigger();
-              }}
-              className="mt-8 space-y-6"
-            >
-              <input type="hidden" name="remember" defaultValue="true" />
-              <div className="-space-y-px rounded-md shadow-sm">
+                <input type="hidden" name="remember" defaultValue="true" />
                 <div>
-                  <label htmlFor="email-address" className="sr-only">
-                    Email
+                  <label
+                    htmlFor="name"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Your name
                   </label>
-                  <input
-                    {...register("email")}
-                    id="email-address"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="focus:border-neon focus:ring-neon relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none sm:text-sm"
-                    placeholder="Email"
+                  <FormField
+                    name="name"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormControl>
+                          <Input
+                            id="name"
+                            type="text"
+                            placeholder="Dhaval Patel"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
                   />
+                  {/* <Input
+                  placeholder="x@example.com"
+                  {...register("email")}
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                /> */}
+
+                  {/*                 <input
+                type="email"
+                name="email"
+                id="email"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="name@company.com"
+              /> */}
                 </div>
                 <div>
-                  <label htmlFor="password" className="sr-only">
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Your email
+                  </label>
+                  <FormField
+                    name="email"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="x@example.com"
+                            autoComplete="email"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {/* <Input
+                  placeholder="x@example.com"
+                  {...register("email")}
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                /> */}
+
+                  {/*                 <input
+                type="email"
+                name="email"
+                id="email"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="name@company.com"
+              /> */}
+                </div>
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Password
                   </label>
-                  <input
-                    {...register("password", {
-                      minLength: {
-                        value: 7,
-                        message:
-                          "Your password has to be at least 7 characters long.",
-                      },
-                    })}
-                    id="password"
+
+                  <FormField
                     name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="focus:border-neon focus:ring-neon relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none sm:text-sm"
-                    placeholder="Password"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormControl>
+                          <Input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
                   />
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                onClick={() => {
-                  form.clearErrors();
-                }}
-                className="sgroup relative flex w-full"
-              >
-                Create Account
-              </button>
-              <div className="pt-2">
-                <div className="relative">
-                  <div
-                    className="absolute inset-0 flex items-center"
-                    aria-hidden="true"
-                  >
-                    <div className="w-full border-t border-gray-300" />
-                  </div>
-                  <div className="relative flex justify-center"></div>
+                <Button className="w-full" size="lg" type="submit">
+                  Create Account
+                </Button>
+
+                <div className="inline-flex items-center justify-center w-full">
+                  <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                  <span className="absolute px-2 opacity-75 bg-white dark:bg-gray-800 text-gray-900 -translate-x-1/2 left-1/2 dark:text-white">
+                    Or continue with
+                  </span>
                 </div>
-              </div>
-              <p className="mt-2 text-center text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link
-                  href="/login"
-                  className="text-gray-500 hover:text-neon-700 font-medium"
-                >
-                  Sign In
-                </Link>
-              </p>
-            </form>
-          </FormProvider>
+
+                {/* ### Providers ###  */}
+
+                <div>
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    variant="outline"
+                    type="button"
+                  >
+                    <Image
+                      className="w-5 h-5"
+                      src={googleSvgImg}
+                      alt="Google"
+                    />
+                    <span className="mx-1" />
+                    Google
+                  </Button>
+
+                  <Button
+                    className="w-full mt-3"
+                    size="lg"
+                    variant="outline"
+                    type="button"
+                  >
+                    <Image
+                      className="w-5 h-5"
+                      src={theme === "dark" ? githubWhiteSvgImg : githubSvgImg}
+                      alt="Google"
+                    />
+                    <span className="mx-1" />
+                    Github
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
         </div>
+        <p className="text-sm mt-3 font-light text-gray-500 dark:text-gray-400">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+          >
+            Login
+          </Link>
+        </p>
       </div>
-    </>
+    </section>
   );
 }

@@ -1,24 +1,42 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { NEXT_PUBLIC_WEBAPP_URL } from "@genius-ai/lib/constants";
-// import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { signIn } from "next-auth/react";
-import { FormProvider, useForm } from "react-hook-form";
 import { useToast } from "@genius-ai/lib/hooks";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  Input,
+  Button,
+} from "@genius-ai/ui";
+
+import logoSvgImg from "@/assets/ai-logo.svg";
+import googleSvgImg from "@/assets/google.svg";
+import githubSvgImg from "@/assets/github.svg";
+import githubWhiteSvgImg from "@/assets/github-white.svg";
 
 interface LoginValues {
   email: string;
   password: string;
-  totpCode: string;
-  csrfToken: string;
 }
 
 export default function Login() {
   const router = useRouter();
-  const methods = useForm<LoginValues>();
+  const methods = useForm<LoginValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   const { toast } = useToast();
-  const { register, formState } = methods;
+  const { theme } = useTheme();
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   let callbackUrl =
     typeof router.query?.callbackUrl === "string"
@@ -63,42 +81,94 @@ export default function Login() {
   };
 
   return (
-    <>
-      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8">
-          <div>
-            {/* <Logo className="mx-auto h-20 w-auto text-black"></Logo> */}
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Sign in to your account
-            </h2>
-          </div>
-          <FormProvider {...methods}>
-            <form
-              className="mt-8 space-y-6"
-              onSubmit={methods.handleSubmit(onSubmit)}
-            >
-              <input type="hidden" name="remember" defaultValue="true" />
-              <div className="-space-y-px rounded-md shadow-sm">
+    <section className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a
+          href="#"
+          className="flex items-center mb-6 text-3xl font-semibold text-gray-900 dark:text-white"
+        >
+          <Image className="w-8 h-8 mr-2" src={logoSvgImg} alt="logo" />
+          Genius AI
+        </a>
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Welcome back
+            </h1>
+            <Form {...methods}>
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={methods.handleSubmit(onSubmit)}
+              >
+                <input type="hidden" name="remember" defaultValue="true" />
                 <div>
-                  <label htmlFor="email-address" className="sr-only">
-                    Email
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Your email
                   </label>
-                  <input
+                  <FormField
+                    name="email"
+                    control={methods.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="x@example.com"
+                            autoComplete="email"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {/* <Input
+                    placeholder="x@example.com"
                     {...register("email")}
                     id="email-address"
                     name="email"
                     type="email"
                     autoComplete="email"
                     required
-                    className="focus:border-neon focus:ring-neon relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none sm:text-sm"
-                    placeholder="Email"
-                  />
+                  /> */}
+
+                  {/*                 <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="name@company.com"
+                /> */}
                 </div>
                 <div>
-                  <label htmlFor="password" className="sr-only">
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Password
                   </label>
-                  <input
+
+                  <FormField
+                    name="password"
+                    control={methods.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormControl>
+                          <Input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            autoComplete="current-password"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* <Input
                     {...register("password")}
                     id="password"
                     name="password"
@@ -107,58 +177,108 @@ export default function Login() {
                     required
                     className="focus:border-neon focus:ring-neon relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none sm:text-sm"
                     placeholder="Password"
-                  />
+                  /> */}
+
+                  {/* <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  /> */}
                 </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-sm">
-                  <Link
-                    href="/forgot-password"
-                    className="hover:text-neon-700 font-medium text-gray-500"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  disabled={formState.isSubmitting}
-                  className="group relative flex w-full"
-                >
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                    {/* <LockClosedIcon
-                      className="text-neon-700 group-hover:text-neon-dark-700 h-5 w-5 duration-200 disabled:disabled:bg-gray-600 disabled:group-hover:bg-gray-600"
-                      aria-hidden="true"
-                    /> */}
-                  </span>
-                  Sign in
-                </button>
-              </div>
-              <div>
-                <div className="relative">
-                  <div
-                    className="absolute inset-0 flex items-center"
-                    aria-hidden="true"
-                  >
-                    <div className="w-full border-t border-gray-300" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-start">
+                    <div className="flex items-center h-5">
+                      <input
+                        id="remember"
+                        aria-describedby="remember"
+                        type="checkbox"
+                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      />
+                    </div>
+                    <div className="ml-3 text-sm">
+                      <label
+                        htmlFor="remember"
+                        className="text-gray-500 dark:text-gray-300"
+                      >
+                        Remember me
+                      </label>
+                    </div>
                   </div>
-                  <div className="relative flex justify-center"></div>
+                  <a
+                    href="#"
+                    className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  >
+                    Forgot password?
+                  </a>
                 </div>
-              </div>
-              <p className="mt-2 text-center text-sm text-gray-600">
-                Are you new here?{" "}
-                <Link
-                  href="/signup"
-                  className="hover:text-neon-700 font-medium text-gray-500 duration-200"
-                >
-                  Create a new Account
-                </Link>
-              </p>
-            </form>
-          </FormProvider>
+
+                <Button className="w-full" size="lg" type="submit">
+                  Sign In
+                </Button>
+
+                {/* <button
+                type="submit"
+                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                Sign in
+              </button> */}
+                <div className="inline-flex items-center justify-center w-full">
+                  <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                  <span className="absolute px-2 opacity-75 bg-white dark:bg-gray-800 text-gray-900 -translate-x-1/2 left-1/2 dark:text-white">
+                    Or sign in with
+                  </span>
+                </div>
+
+                {/* ### Providers ###  */}
+
+                <div>
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    variant="outline"
+                    type="button"
+                    onClick={() => signIn("google")}
+                  >
+                    <Image
+                      className="w-5 h-5"
+                      src={googleSvgImg}
+                      alt="Google"
+                    />
+                    <span className="mx-1" />
+                    Google
+                  </Button>
+
+                  <Button
+                    className="w-full mt-3"
+                    size="lg"
+                    variant="outline"
+                    type="button"
+                  >
+                    <Image
+                      className="w-5 h-5"
+                      src={theme === "dark" ? githubWhiteSvgImg : githubSvgImg}
+                      alt="Google"
+                    />
+                    <span className="mx-1" />
+                    Github
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
         </div>
+        <p className="text-sm mt-3 font-light text-gray-500 dark:text-gray-400">
+          Don’t have an account yet?{" "}
+          <Link
+            href="/signup"
+            className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+          >
+            Sign up
+          </Link>
+        </p>
       </div>
-    </>
+    </section>
   );
 }

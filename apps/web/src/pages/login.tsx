@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { getUserFromToken } from "@genius-ai/lib/server";
-import Login from "../components/Login";
+import Login from "@/components/Login";
 
 export default function LoginPage() {
   return (
