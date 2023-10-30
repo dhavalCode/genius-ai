@@ -255,6 +255,7 @@ export default function Login() {
                     size="lg"
                     variant="outline"
                     type="button"
+                    onClick={() => signIn("github")}
                   >
                     <Image
                       className="w-5 h-5"
