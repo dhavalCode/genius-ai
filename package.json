@@ -2,7 +2,7 @@
   "private": true,
   "name": "genius-ai",
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --filter=web",
     "dev": "turbo run dev",
     "db-studio": "prisma studio",
     "db-seed": "prisma db seed",
@@ -10,6 +10,7 @@
     "db-migrate:dev": "prisma migrate dev",
     "db-push": "prisma db push",
     "generate": "prisma generate",
+    "prod-deploy": "npm install && npm run db-migrate:dev && npm run build",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

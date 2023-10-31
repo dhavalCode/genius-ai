@@ -1,6 +1,10 @@
 import { Brain, Category } from "@prisma/client";
 import { getUserFromToken } from "@genius-ai/lib/server";
-import { getBrainData, getCategories } from "@genius-ai/lib/query";
+import {
+  checkSubscription,
+  getBrainData,
+  getCategories,
+} from "@genius-ai/lib/query";
 
 import { BrainCreationForm } from "@/components/BrainCreationForm";
 import Layout from "@/components/Layout";
@@ -8,13 +12,14 @@ import Layout from "@/components/Layout";
 type BrainIdPageProps = {
   categories: Category[];
   initialData: Brain | null;
+  isPro: boolean;
 };
 
 const BrainIdPage = (props: BrainIdPageProps) => {
-  const { categories, initialData } = props;
+  const { categories, initialData, isPro } = props;
 
   return (
-    <Layout>
+    <Layout isPro={isPro}>
       <BrainCreationForm initialData={initialData} categories={categories} />
     </Layout>
   );
@@ -53,7 +58,9 @@ export async function getServerSideProps(context: any) {
     initialData = null;
   }
 
-  return { props: { categories, initialData } };
+  const isPro = await checkSubscription(context.req, context.res);
+
+  return { props: { categories, initialData, isPro } };
 }
 
 export default BrainIdPage;

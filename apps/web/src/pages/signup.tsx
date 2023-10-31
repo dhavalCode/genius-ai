@@ -19,6 +19,7 @@ import logoSvgImg from "@/assets/ai-logo.svg";
 import googleSvgImg from "@/assets/google.svg";
 import githubSvgImg from "@/assets/github.svg";
 import githubWhiteSvgImg from "@/assets/github-white.svg";
+import { getUserFromToken } from "@genius-ai/lib/server";
 
 type FormValues = {
   email: string;
@@ -243,6 +244,7 @@ export default function Signup(props: { source: string }) {
                     size="lg"
                     variant="outline"
                     type="button"
+                    onClick={() => signIn("google")}
                   >
                     <Image
                       className="w-5 h-5"
@@ -258,6 +260,7 @@ export default function Signup(props: { source: string }) {
                     size="lg"
                     variant="outline"
                     type="button"
+                    onClick={() => signIn("github")}
                   >
                     <Image
                       className="w-5 h-5"
@@ -284,4 +287,18 @@ export default function Signup(props: { source: string }) {
       </div>
     </section>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  const user = await getUserFromToken(context.req, context.res);
+  if (user)
+    return {
+      redirect: {
+        source: "/signup",
+        destination: "/",
+        permanent: false,
+      },
+    };
+
+  return { props: {} };
 }

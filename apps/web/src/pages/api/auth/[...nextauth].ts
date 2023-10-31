@@ -79,8 +79,8 @@ export default NextAuth({
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!
-    })
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    }),
   ],
   callbacks: {
     async jwt({ token, user, account }) {
@@ -99,7 +99,12 @@ export default NextAuth({
       authSession.expires;
       return authSession;
     },
-    async signIn({ profile }) {
+    async signIn({ profile, account }) {
+      // check manual sign in
+      if (account?.type === "credentials") {
+        return true;
+      }
+
       if (profile?.email) {
         const userExist = await prisma.user.findFirst({
           where: {
@@ -116,13 +121,13 @@ export default NextAuth({
                 email: profile.email,
                 name: profile.name,
                 identityProvider: "GOOGLE",
-                emailVerified: new Date(Date.now())
+                emailVerified: new Date(Date.now()),
               },
               update: {
                 email: profile.email,
                 name: profile.name,
                 identityProvider: "GOOGLE",
-                emailVerified: new Date(Date.now())
+                emailVerified: new Date(Date.now()),
               },
             });
           } catch (error) {
