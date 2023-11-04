@@ -1,27 +1,24 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@genius-ai/prisma";
 import { hashPassword } from "@genius-ai/lib/auth";
 import { defaultHandler, defaultResponder } from "@genius-ai/lib/server";
-import prisma from "@genius-ai/prisma";
+import { SignupInputType, signupSchema } from "@genius-ai/lib/validations";
 
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
-  const { email, password, source } = req.body;
-  const cleanEmail = email.toLowerCase();
+  const validated = signupSchema.safeParse(req.body);
 
-  if (!cleanEmail || !/.+@.+/.test(cleanEmail)) {
-    res.status(400).json({ message: "Invalid email" });
-    return;
-  }
-
-  if (!password || password.trim().length < 7) {
+  if (!validated.success)
     return res.status(400).json({
-      message: "Password should be at least 7 characters long.",
+      message: "Please provide valid inputs.",
+      error: validated.error,
     });
-  }
+
+  const data: SignupInputType = validated.data;
 
   // User already exists if email already exists
   const existingUser = await prisma.user.findFirst({
     where: {
-      email: cleanEmail,
+      email: data.email,
     },
   });
 
@@ -30,17 +27,19 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(409).json({ message });
   }
 
-  const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hashPassword(data.password);
 
   const user = await prisma.user.upsert({
-    where: { email: cleanEmail },
+    where: { email: data.email },
     update: {
+      name: data.name,
       password: hashedPassword,
       emailVerified: new Date(Date.now()),
       identityProvider: "EMAIL",
     },
     create: {
-      email: cleanEmail,
+      name: data.name,
+      email: data.email,
       password: hashedPassword,
       identityProvider: "EMAIL",
       emailVerified: new Date(Date.now()),

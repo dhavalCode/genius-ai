@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { signIn } from "next-auth/react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getUserFromToken } from "@genius-ai/lib/server";
-import { useClientSide } from "@genius-ai/lib/hooks";
+import { toast, useClientSide } from "@genius-ai/lib/hooks";
 
 import { NEXT_PUBLIC_WEBAPP_URL } from "@genius-ai/lib/constants";
 import {
@@ -16,38 +17,30 @@ import {
   FormItem,
   Input,
   Button,
+  FormDescription,
 } from "@genius-ai/ui";
 
 import logoSvgImg from "@/assets/ai-logo.svg";
 import googleSvgImg from "@/assets/google.svg";
 import githubSvgImg from "@/assets/github.svg";
 import githubWhiteSvgImg from "@/assets/github-white.svg";
+import { signupSchema } from "@genius-ai/lib/validations";
+import { classNames } from "@genius-ai/lib/utils";
 
 type FormValues = {
   email: string;
   password: string;
-  apiError: string;
   name: string;
 };
 
 export default function Signup(props: { source: string }) {
-  const form = useForm<FormValues>({});
-  const {
-    register,
-    trigger,
-    formState: { errors, isSubmitting },
-  } = form;
+  const form = useForm<FormValues>({
+    resolver: zodResolver(signupSchema),
+  });
 
   const { theme } = useTheme();
 
   const isClientSide = useClientSide();
-
-  /* const handleErrors = async (resp: Response) => {
-    if (!resp.ok) {
-      const err = await resp.json();
-      throw new Error(err.message);
-    }
-  }; */
 
   const signUp: SubmitHandler<FormValues> = async (data) => {
     axios
@@ -59,61 +52,31 @@ export default function Signup(props: { source: string }) {
         });
       })
       .catch((err) => {
-        //  TODO Toast Add
-        form.setError("apiError", { message: err.message });
+        if (err?.response?.data?.message) {
+          toast({
+            variant: "destructive",
+            description: err.response.data.message,
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "Something went wrong",
+          });
+        }
       });
   };
 
-  function renderApiError() {
-    if (!errors.apiError) return;
-    return (
-      <div className="rounded-md bg-red-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            {/* <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" /> */}
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-red-800">
-              {errors.apiError && <div>{errors.apiError?.message}</div>}
-            </h3>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function renderFormValidation() {
-    if (!errors.password && !errors.email) return;
-    return (
-      <div className="rounded-md bg-red-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            {/* <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" /> */}
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-red-800">
-              {errors.password && <div>{errors.password?.message}</div>}
-            </h3>
-            <h3 className="text-sm font-medium text-red-800">
-              {errors.email && <div>{errors.email?.message}</div>}
-            </h3>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
+    <section className=" dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <p className="flex items-center mb-6 text-3xl font-semibold text-gray-900 dark:text-white">
           <Image className="w-8 h-8 mr-2" src={logoSvgImg} alt="logo" />
           Genius AI
         </p>
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full bg-slate-100 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create your account
+              Create your account 🚀
             </h1>
             <Form {...form}>
               <form
@@ -131,36 +94,30 @@ export default function Signup(props: { source: string }) {
                   <FormField
                     name="name"
                     control={form.control}
-                    render={({ field }) => (
+                    render={({ field, fieldState }) => (
                       <FormItem className="col-span-2 md:col-span-1">
                         <FormControl>
                           <Input
                             id="name"
                             type="text"
                             placeholder="Dhaval Patel"
+                            className={classNames(
+                              "dark:bg-background/30",
+                              fieldState.error?.message
+                                ? "border-destructive focus-visible:ring-destructive"
+                                : ""
+                            )}
                             {...field}
                           />
                         </FormControl>
+                        {fieldState.error?.message && (
+                          <FormDescription className="text-destructive">
+                            {fieldState.error.message}
+                          </FormDescription>
+                        )}
                       </FormItem>
                     )}
                   />
-                  {/* <Input
-                  placeholder="x@example.com"
-                  {...register("email")}
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                /> */}
-
-                  {/*                 <input
-                type="email"
-                name="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@company.com"
-              /> */}
                 </div>
                 <div>
                   <label
@@ -172,36 +129,30 @@ export default function Signup(props: { source: string }) {
                   <FormField
                     name="email"
                     control={form.control}
-                    render={({ field }) => (
+                    render={({ field, fieldState }) => (
                       <FormItem className="col-span-2 md:col-span-1">
                         <FormControl>
                           <Input
                             type="email"
                             placeholder="x@example.com"
                             autoComplete="email"
+                            className={classNames(
+                              "dark:bg-background/30",
+                              fieldState.error?.message
+                                ? "border-destructive focus-visible:ring-destructive"
+                                : ""
+                            )}
                             {...field}
                           />
                         </FormControl>
+                        {fieldState.error?.message && (
+                          <FormDescription className="text-destructive">
+                            {fieldState.error.message}
+                          </FormDescription>
+                        )}
                       </FormItem>
                     )}
                   />
-                  {/* <Input
-                  placeholder="x@example.com"
-                  {...register("email")}
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                /> */}
-
-                  {/*                 <input
-                type="email"
-                name="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@company.com"
-              /> */}
                 </div>
                 <div>
                   <label
@@ -214,16 +165,27 @@ export default function Signup(props: { source: string }) {
                   <FormField
                     name="password"
                     control={form.control}
-                    render={({ field }) => (
+                    render={({ field, fieldState }) => (
                       <FormItem className="col-span-2 md:col-span-1">
                         <FormControl>
                           <Input
                             id="password"
                             type="password"
                             placeholder="••••••••"
+                            className={classNames(
+                              "dark:bg-background/30",
+                              fieldState.error?.message
+                                ? "border-destructive focus-visible:ring-destructive"
+                                : ""
+                            )}
                             {...field}
                           />
                         </FormControl>
+                        {fieldState.error?.message && (
+                          <FormDescription className="text-destructive">
+                            {fieldState.error.message}
+                          </FormDescription>
+                        )}
                       </FormItem>
                     )}
                   />

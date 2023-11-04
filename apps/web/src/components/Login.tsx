@@ -36,9 +36,9 @@ export default function Login() {
   });
   const { toast } = useToast();
   const { theme } = useTheme();
+
   const isClientSide = useClientSide();
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   let callbackUrl =
     typeof router.query?.callbackUrl === "string"
       ? router.query.callbackUrl
@@ -50,15 +50,12 @@ export default function Login() {
   }
 
   const onSubmit = async (values: LoginValues) => {
-    setErrorMessage(null);
     const res = await signIn<"credentials">("credentials", {
       ...values,
       callbackUrl,
       redirect: false,
     });
-    if (!res) {
-      setErrorMessage("Error");
-    } else if (!res.error) {
+    if (!res?.error) {
       // we're logged in, let's do a hard refresh to the original url
       router.push(callbackUrl);
     } else {
@@ -68,10 +65,7 @@ export default function Login() {
           description: "Invalid email or password.",
           duration: 3000,
         });
-
-        // toast.error("Invalid email or password.");
       } else {
-        // toast.error("Could not login.");
         toast({
           variant: "destructive",
           description: "Could not login.",
@@ -82,19 +76,19 @@ export default function Login() {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
+    <section className="dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
-          href="#"
+          href=""
           className="flex items-center mb-6 text-3xl font-semibold text-gray-900 dark:text-white"
         >
           <Image className="w-8 h-8 mr-2" src={logoSvgImg} alt="logo" />
           Genius AI
         </a>
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full bg-slate-100 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Welcome back
+              Welcome back 👋
             </h1>
             <Form {...methods}>
               <form
@@ -119,29 +113,13 @@ export default function Login() {
                             type="email"
                             placeholder="x@example.com"
                             autoComplete="email"
+                            className="dark:bg-background/30"
                             {...field}
                           />
                         </FormControl>
                       </FormItem>
                     )}
                   />
-                  {/* <Input
-                    placeholder="x@example.com"
-                    {...register("email")}
-                    id="email-address"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                  /> */}
-
-                  {/*                 <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
-                /> */}
                 </div>
                 <div>
                   <label
@@ -162,31 +140,13 @@ export default function Login() {
                             type="password"
                             placeholder="••••••••"
                             autoComplete="current-password"
+                            className="dark:bg-background/30"
                             {...field}
                           />
                         </FormControl>
                       </FormItem>
                     )}
                   />
-
-                  {/* <Input
-                    {...register("password")}
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="focus:border-neon focus:ring-neon relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none sm:text-sm"
-                    placeholder="Password"
-                  /> */}
-
-                  {/* <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  /> */}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-start">
@@ -219,16 +179,10 @@ export default function Login() {
                   Sign In
                 </Button>
 
-                {/* <button
-                type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Sign in
-              </button> */}
                 <div className="inline-flex items-center justify-center w-full">
                   <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
                   <span className="absolute px-2 opacity-75 bg-white dark:bg-gray-800 text-gray-900 -translate-x-1/2 left-1/2 dark:text-white">
-                    Or sign in with
+                    Or continue with
                   </span>
                 </div>
 
