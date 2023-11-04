@@ -3,7 +3,7 @@ import { getUserFromToken } from "@genius-ai/lib/server";
 import { defaultHandler, defaultResponder } from "@genius-ai/lib/server";
 import prisma from "@genius-ai/prisma";
 
-async function postHandler(req: NextApiRequest, res: NextApiResponse) {
+async function putHandler(req: NextApiRequest, res: NextApiResponse) {
   const user = await getUserFromToken(req, res);
 
   if (!user) {
@@ -14,10 +14,16 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     res.status(400).json({ message: "Title can not be empty." });
   }
 
-  const created = await prisma.category.create({
-    data: {
+  const created = await prisma.category.upsert({
+    where: {
+      id: req.body.categoryId ?? "",
+    },
+    create: {
       name: req.body.title,
       userId: user.id,
+    },
+    update: {
+      name: req.body.title,
     },
   });
 
@@ -37,5 +43,5 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
 
 export default defaultHandler({
   GET: Promise.resolve({ default: defaultResponder(getHandler) }),
-  POST: Promise.resolve({ default: defaultResponder(postHandler) }),
+  PUT: Promise.resolve({ default: defaultResponder(putHandler) }),
 });

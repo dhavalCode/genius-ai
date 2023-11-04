@@ -5,6 +5,9 @@ import { useTheme } from "next-themes";
 import { signIn } from "next-auth/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { getUserFromToken } from "@genius-ai/lib/server";
+import { useClientSide } from "@genius-ai/lib/hooks";
+
 import { NEXT_PUBLIC_WEBAPP_URL } from "@genius-ai/lib/constants";
 import {
   Form,
@@ -19,7 +22,6 @@ import logoSvgImg from "@/assets/ai-logo.svg";
 import googleSvgImg from "@/assets/google.svg";
 import githubSvgImg from "@/assets/github.svg";
 import githubWhiteSvgImg from "@/assets/github-white.svg";
-import { getUserFromToken } from "@genius-ai/lib/server";
 
 type FormValues = {
   email: string;
@@ -37,6 +39,8 @@ export default function Signup(props: { source: string }) {
   } = form;
 
   const { theme } = useTheme();
+
+  const isClientSide = useClientSide();
 
   /* const handleErrors = async (resp: Response) => {
     if (!resp.ok) {
@@ -262,11 +266,15 @@ export default function Signup(props: { source: string }) {
                     type="button"
                     onClick={() => signIn("github")}
                   >
-                    <Image
-                      className="w-5 h-5"
-                      src={theme === "dark" ? githubWhiteSvgImg : githubSvgImg}
-                      alt="Google"
-                    />
+                    {isClientSide && (
+                      <Image
+                        className="w-5 h-5"
+                        src={
+                          theme === "dark" ? githubWhiteSvgImg : githubSvgImg
+                        }
+                        alt="Github"
+                      />
+                    )}
                     <span className="mx-1" />
                     Github
                   </Button>

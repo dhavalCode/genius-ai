@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
 import { Category } from "@prisma/client";
@@ -21,17 +22,23 @@ type HomeProps = {
 };
 
 function HomePage({ categories, brains, isPro }: HomeProps) {
+  const [isDesignMode, setIsDesignMode] = useState(false);
+
   return (
     <Layout isPro={isPro}>
       <div className="h-full p-4 space-y-2">
         <SearchInput />
         <div className="flex items-center space-x-2 py-2">
-          <Switch id="design-mode" />
+          <Switch
+            id="design-mode"
+            checked={isDesignMode}
+            onCheckedChange={(_checked) => setIsDesignMode(_checked)}
+          />
           <Label className="text-muted-foreground" htmlFor="design-mode">
-            Design
+            Design Mode
           </Label>
         </div>
-        <Categories data={categories} />
+        <Categories data={categories} isDesignMode={isDesignMode} />
         <Brains data={brains} />
       </div>
     </Layout>

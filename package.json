@@ -10,7 +10,7 @@
     "db-migrate:dev": "prisma migrate dev",
     "db-push": "prisma db push",
     "generate": "prisma generate",
-    "prod-deploy": "npm install && npm run db-migrate:dev && npm run build",
+    "prod-deploy": "npm run db-migrate:deploy && npm run generate && npm run build",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

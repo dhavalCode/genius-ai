@@ -6,8 +6,7 @@ import { stripe } from "@genius-ai/lib/api";
 import prisma from "@genius-ai/prisma";
 
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
-
-  console.log("Debug Request !!!!!");
+  
   const sig =
     typeof req.headers["stripe-signature"] === "string"
       ? req.headers["stripe-signature"]

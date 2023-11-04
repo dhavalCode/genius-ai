@@ -2,16 +2,20 @@ import { create } from "zustand";
 
 interface useCategoryModalStore {
   isOpen: boolean;
-  title: string | null | undefined;
+  categoryTitle: string | null | undefined;
+  categoryId: string | null | undefined;
   onOpen: () => void;
   onClose: () => void;
-  setTitle: (_title: string | null | undefined) => void;
+  setCategoryTitle: (_title: string | null | undefined) => void;
+  setCategoryId: (_id: string | null | undefined) => void;
 }
 
 export const useCategoryModal = create<useCategoryModalStore>((set) => ({
   isOpen: false,
-  title: null,
+  categoryTitle: null,
+  categoryId: null,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
-  setTitle: (_title) => set({ title: _title }),
+  setCategoryTitle: (_title) => set({ categoryTitle: _title }),
+  setCategoryId: (_id) => set({ categoryId: _id }),
 }));

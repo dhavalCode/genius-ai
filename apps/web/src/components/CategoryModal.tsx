@@ -17,8 +17,16 @@ import { useCategoryModal } from "@genius-ai/lib/hooks";
 import { useToast } from "@genius-ai/lib/hooks";
 
 export const CategoryModal = () => {
-  const { isOpen, onClose, setTitle, title } = useCategoryModal();
+  const {
+    isOpen,
+    onClose,
+    setCategoryTitle,
+    categoryTitle,
+    categoryId,
+    setCategoryId,
+  } = useCategoryModal();
   const [isMounted, setIsMounted] = useState(false);
+  const [title, setTitle] = useState(categoryTitle);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<String | null>(null);
   const { toast } = useToast();
@@ -28,10 +36,19 @@ export const CategoryModal = () => {
     setIsMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      setTitle(categoryTitle ?? "");
+    }
+  }, [isOpen]);
+
   const handleModalClose = () => {
-    setError(null);
-    setTitle(null);
     onClose();
+    setTimeout(() => {
+      setCategoryId(null);
+      setError(null);
+      setCategoryTitle(null);
+    }, 200);
   };
 
   const handleCheckTitle = async (_title: string) => {
@@ -39,8 +56,11 @@ export const CategoryModal = () => {
       return false;
     }
 
+    if (_title.toLowerCase() === categoryTitle?.toLocaleLowerCase()) {
+      return true;
+    }
+
     try {
-      setLoading(true);
       const response = await axios.get(
         `/api/category/check-title?title=${_title}`
       );
@@ -63,24 +83,29 @@ export const CategoryModal = () => {
     }
 
     setError(null);
-    setLoading(false);
     return true;
   };
 
   const onSave = async () => {
+    const sanitizeTitle = title?.trim();
     try {
       setLoading(true);
 
-      if (!handleCheckTitle(title!)) {
+      if (!(await handleCheckTitle(sanitizeTitle!))) {
         return;
       }
 
-      await axios.post("/api/category", {
-        title: title,
+      await axios.put("/api/category", {
+        title: sanitizeTitle,
+        ...(categoryId && {
+          categoryId,
+        }),
       });
 
       toast({
-        description: "Category created successfully.",
+        description: categoryId
+          ? "Category updated successfully."
+          : "Category created successfully.",
         variant: "default",
       });
 
@@ -105,18 +130,20 @@ export const CategoryModal = () => {
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
       <DialogContent>
         <DialogHeader className="space-y-4">
-          <DialogTitle className="text-center">Create Category</DialogTitle>
+          <DialogTitle className="text-center">
+            {categoryId ? "Update" : "Create"} Category
+          </DialogTitle>
         </DialogHeader>
         <Separator />
         <div className="space-y-3">
           <Label className="text-sm">Title</Label>
           <Input
+            value={title ?? ""}
             placeholder="Latest"
             className={
               error ? "border-destructive ring-offset-destructive" : ""
             }
             onChange={(e) => setTitle(e.target.value)}
-            onBlur={(e) => handleCheckTitle(e.target.value)}
           />
           {error && <p className="text-sm text-destructive">{error}</p>}
           <div className="flex justify-end pt-5">
@@ -125,7 +152,7 @@ export const CategoryModal = () => {
               disabled={loading || title === ""}
               variant="premium"
             >
-              Save
+              {loading ? "Saving..." : "Save"}
             </Button>
           </div>
         </div>

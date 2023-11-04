@@ -13,7 +13,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
 
   if (!title || title === "") {
     return res.status(400).json({
-      message: "Please provide name",
+      message: "Title Can not be empty",
     });
   }
 

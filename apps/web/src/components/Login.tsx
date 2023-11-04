@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { NEXT_PUBLIC_WEBAPP_URL } from "@genius-ai/lib/constants";
 import { signIn } from "next-auth/react";
-import { useToast } from "@genius-ai/lib/hooks";
+import { useClientSide, useToast } from "@genius-ai/lib/hooks";
 import {
   Form,
   FormControl,
@@ -36,6 +36,7 @@ export default function Login() {
   });
   const { toast } = useToast();
   const { theme } = useTheme();
+  const isClientSide = useClientSide();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   let callbackUrl =
@@ -257,11 +258,15 @@ export default function Login() {
                     type="button"
                     onClick={() => signIn("github")}
                   >
-                    <Image
-                      className="w-5 h-5"
-                      src={theme === "dark" ? githubWhiteSvgImg : githubSvgImg}
-                      alt="Google"
-                    />
+                    {isClientSide && (
+                      <Image
+                        className="w-5 h-5"
+                        src={
+                          theme === "dark" ? githubWhiteSvgImg : githubSvgImg
+                        }
+                        alt="Github"
+                      />
+                    )}
                     <span className="mx-1" />
                     Github
                   </Button>

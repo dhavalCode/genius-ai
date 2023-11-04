@@ -1,3 +1,4 @@
+"use-client";
 import React from "react";
 import { MoreVertical, Edit, Trash } from "lucide-react";
 import { classNames, makeShortText } from "@genius-ai/lib/utils";
@@ -10,13 +11,29 @@ import {
 } from "@genius-ai/ui";
 import { Category } from "@prisma/client";
 
+import { useCategoryModal, useClientSide } from "@genius-ai/lib/hooks";
+
 interface CategoryItemProps {
   handleClick: (id: string | undefined) => void;
   item: Category;
   active: Boolean;
+  isDesignMode: Boolean;
+  handleDelete: (_id: string) => void;
 }
 
-function CategoryItem({ handleClick, item, active }: CategoryItemProps) {
+function CategoryItem({
+  handleClick,
+  item,
+  active,
+  isDesignMode,
+  handleDelete,
+}: CategoryItemProps) {
+  const {
+    onOpen: onCategoryModalOpen,
+    setCategoryTitle,
+    setCategoryId,
+  } = useCategoryModal();
+  const isClientSide = useClientSide();
   return (
     <button
       onClick={() => handleClick(item.id)}
@@ -42,27 +59,43 @@ function CategoryItem({ handleClick, item, active }: CategoryItemProps) {
       key={item.id}
     >
       <span className="justify-self-start">{makeShortText(item.name, 20)}</span>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="secondary"
-            size="icon"
-            className="bg-transparent text-sm h-5 w-5"
-          >
-            <MoreVertical className="h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>
-            <Edit className="w-4 h-4 mr-2" />
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-destructive">
-            <Trash className="w-4 h-4 mr-2" />
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {isDesignMode && isClientSide && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="bg-transparent text-sm h-5 w-5 ml-2"
+              type="button"
+            >
+              <MoreVertical className="h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setCategoryTitle(item.name);
+                setCategoryId(item.id);
+                onCategoryModalOpen();
+              }}
+            >
+              <Edit className="w-4 h-4 mr-2" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-destructive"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(item.id);
+              }}
+            >
+              <Trash className="w-4 h-4 mr-2" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </button>
   );
 }

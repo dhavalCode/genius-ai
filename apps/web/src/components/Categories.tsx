@@ -1,17 +1,19 @@
+import axios from "axios";
 import qs from "query-string";
 import { PlusCircle } from "lucide-react";
 import { Category } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { classNames } from "@genius-ai/lib/utils";
-import { useCategoryModal } from "@genius-ai/lib/hooks";
+import { toast, useCategoryModal } from "@genius-ai/lib/hooks";
 import CategoryItem from "./CategoryItem";
 
 interface CategoriesProps {
   data: Category[];
+  isDesignMode: Boolean;
 }
 
-export const Categories = ({ data }: CategoriesProps) => {
+export const Categories = ({ data, isDesignMode }: CategoriesProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -31,6 +33,24 @@ export const Categories = ({ data }: CategoriesProps) => {
     );
 
     router.push(url);
+  };
+
+  const handleDelete = async (_id: string) => {
+    try {
+      await axios.delete(`/api/category/${_id}`);
+
+      toast({
+        description: "Category deleted successfully.",
+        variant: "default",
+      });
+
+      router.push("/");
+    } catch (error) {
+      toast({
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -64,14 +84,18 @@ export const Categories = ({ data }: CategoriesProps) => {
           item={item}
           handleClick={onClick}
           active={item.id === categoryId}
+          isDesignMode={isDesignMode}
+          handleDelete={handleDelete}
         />
       ))}
-      <button
-        onClick={onCategoryOpen}
-        className="flex items-center text-center text-xs md:text-sm px-2 md:px-4 py-2 md:py-3 rounded-md bg-transparent hover:opacity-75 transition"
-      >
-        <PlusCircle />
-      </button>
+      {isDesignMode && (
+        <button
+          onClick={onCategoryOpen}
+          className="flex items-center text-center text-xs md:text-sm px-2 md:px-4 py-2 md:py-3 rounded-md bg-transparent hover:opacity-75 transition"
+        >
+          <PlusCircle />
+        </button>
+      )}
     </div>
   );
 };
