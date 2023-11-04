@@ -113,7 +113,7 @@ export default NextAuth({
         });
         if (!userExist) {
           try {
-            await prisma.user.upsert({
+            const user = await prisma.user.upsert({
               where: {
                 email: profile.email,
               },
@@ -130,6 +130,23 @@ export default NextAuth({
                 emailVerified: new Date(Date.now()),
               },
             });
+            
+            // create one default category
+
+            const found = await prisma.category.findFirst({
+              where: {
+                userId: user.id,
+              },
+            });
+
+            if (!found) {
+              await prisma.category.create({
+                data: {
+                  name: "General",
+                  userId: user.id,
+                },
+              });
+            }
           } catch (error) {
             return false;
           }

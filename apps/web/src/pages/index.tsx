@@ -7,6 +7,7 @@ import {
   getBrains,
   getCategories,
 } from "@genius-ai/lib/query";
+import { Label, Switch } from "@genius-ai/ui";
 
 import { Brains } from "@/components/Brains";
 import Layout from "@/components/Layout";
@@ -24,6 +25,12 @@ function HomePage({ categories, brains, isPro }: HomeProps) {
     <Layout isPro={isPro}>
       <div className="h-full p-4 space-y-2">
         <SearchInput />
+        <div className="flex items-center space-x-2 py-2">
+          <Switch id="design-mode" />
+          <Label className="text-muted-foreground" htmlFor="design-mode">
+            Design
+          </Label>
+        </div>
         <Categories data={categories} />
         <Brains data={brains} />
       </div>

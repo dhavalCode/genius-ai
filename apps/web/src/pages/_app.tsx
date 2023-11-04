@@ -4,6 +4,7 @@ import { Toaster } from "@genius-ai/ui";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ProModal } from "@/components/ProModal";
+import { CategoryModal } from "../components/CategoryModal";
 
 import "@/styles/globals.css";
 
@@ -15,6 +16,7 @@ export default function App({
     <SessionProvider session={session}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <ProModal />
+        <CategoryModal />
         <Toaster />
         <Component {...pageProps} />
       </ThemeProvider>

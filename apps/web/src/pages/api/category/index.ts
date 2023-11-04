@@ -10,7 +10,16 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(401).end();
   }
 
-  const created = await prisma.category.create({ data: req.body });
+  if (!req.body?.title || req.body.title === "") {
+    res.status(400).json({ message: "Title can not be empty." });
+  }
+
+  const created = await prisma.category.create({
+    data: {
+      name: req.body.title,
+      userId: user.id,
+    },
+  });
 
   return res.status(201).json(created);
 }
