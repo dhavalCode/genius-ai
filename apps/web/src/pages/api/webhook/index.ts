@@ -5,8 +5,13 @@ import { defaultHandler, defaultResponder } from "@genius-ai/lib/server";
 import { stripe } from "@genius-ai/lib/api";
 import prisma from "@genius-ai/prisma";
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
-  
   const sig =
     typeof req.headers["stripe-signature"] === "string"
       ? req.headers["stripe-signature"]
@@ -21,7 +26,11 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 
   const body = await buffer(req);
 
-  const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+  const event = stripe.webhooks.constructEvent(
+    body,
+    sig,
+    process.env.STRIPE_WEBHOOK_SECRET!
+  );
 
   const session = event.data.object as Stripe.Checkout.Session;
 
