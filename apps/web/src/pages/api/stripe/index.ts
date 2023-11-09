@@ -43,7 +43,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
             name: "Brain Pro",
             description: "Create Custom AI Brains",
           },
-          unit_amount: 1999,
+          unit_amount: 1000,
           recurring: {
             interval: "month",
           },

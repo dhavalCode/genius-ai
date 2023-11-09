@@ -1,10 +1,11 @@
 import { ErrorCode } from "@genius-ai/lib/auth";
 import { verifyPassword } from "@genius-ai/lib/auth";
-import prisma from "@genius-ai/prisma";
 import NextAuth, { Session } from "next-auth";
+import prisma from "@genius-ai/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import { generateDefaultBrains } from "@genius-ai/lib/api";
 
 export default NextAuth({
   secret: process.env.AUTH_SECRET,
@@ -111,6 +112,7 @@ export default NextAuth({
             email: profile.email,
           },
         });
+
         if (!userExist) {
           try {
             const user = await prisma.user.upsert({
@@ -130,23 +132,9 @@ export default NextAuth({
                 emailVerified: new Date(Date.now()),
               },
             });
-            
-            // create one default category
 
-            const found = await prisma.category.findFirst({
-              where: {
-                userId: user.id,
-              },
-            });
-
-            if (!found) {
-              await prisma.category.create({
-                data: {
-                  name: "General",
-                  userId: user.id,
-                },
-              });
-            }
+            // check and create default brains
+            await generateDefaultBrains(user.id);
           } catch (error) {
             return false;
           }

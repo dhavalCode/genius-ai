@@ -1,9 +1,8 @@
-"use client";
-
 import { Home, Plus, Settings } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { classNames } from "@genius-ai/lib/utils";
+import { useProModal } from "@genius-ai/lib/hooks";
 
 interface SidebarProps {
   isPro: boolean;
@@ -12,8 +11,13 @@ interface SidebarProps {
 const Sidebar = ({ isPro }: SidebarProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const proModal = useProModal();
 
   const onNavigate = (url: string, pro: boolean) => {
+    if (pro && !isPro) {
+      return proModal.onOpen();
+    }
+
     return router.push(url);
   };
 
