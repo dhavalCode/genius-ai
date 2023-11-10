@@ -70,7 +70,7 @@ export const Brains = ({ data }: BrainsProps) => {
           <div className="relative w-60 h-60">
             <Image fill className="grayscale" src={EmptyImg} alt="Empty" />
           </div>
-          <p className="text-sm text-muted-foreground">No Brains found.</p>
+          <p className="text-sm text-muted-foreground">No Brain found.</p>
         </div>
       )}
     </>

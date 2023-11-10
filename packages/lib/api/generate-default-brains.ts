@@ -1,26 +1,21 @@
 import prisma from "@genius-ai/prisma";
-import { CATEGORIES_DATA } from "../constants";
+import { CATEGORY_LIST } from "../constants";
 
 export const generateDefaultBrains = async (userId: string): Promise<void> => {
   const found = await prisma.category.findFirst({ where: { userId } });
-
+  
   if (found) {
     return;
   }
 
-  const categories = CATEGORIES_DATA.map((category) => ({
-    ...category,
-    userId,
-    brains: category.brains.map((brain) => ({ ...brain, userId })),
-  }));
-
-  for (const category of categories) {
+  for (const category of CATEGORY_LIST) {
     await prisma.category.create({
       data: {
-        ...category,
+        name: category.name,
+        userId,
         Brains: {
           createMany: {
-            data: category.brains,
+            data: category.brains.map((brain) => ({ ...brain, userId })),
           },
         },
       },

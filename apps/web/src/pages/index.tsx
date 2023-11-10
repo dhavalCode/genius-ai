@@ -14,6 +14,7 @@ import { Brains } from "@/components/Brains";
 import Layout from "@/components/Layout";
 import { Categories } from "@/components/Categories";
 import { SearchInput } from "@/components/SearchInput";
+import { useProModal } from "@genius-ai/lib/hooks";
 
 type HomeProps = {
   categories: Category[];
@@ -24,6 +25,17 @@ type HomeProps = {
 function HomePage({ categories, brains, isPro }: HomeProps) {
   const [isDesignMode, setIsDesignMode] = useState(false);
 
+  const { onOpen: onProModalOpen } = useProModal();
+
+  const handleOnDesignModeChange = (_checked: boolean) => {
+    if (!isPro) {
+      onProModalOpen();
+      return;
+    }
+
+    setIsDesignMode(_checked);
+  };
+
   return (
     <Layout isPro={isPro}>
       <div className="h-full p-4 space-y-2">
@@ -32,10 +44,10 @@ function HomePage({ categories, brains, isPro }: HomeProps) {
           <Switch
             id="design-mode"
             checked={isDesignMode}
-            onCheckedChange={(_checked) => setIsDesignMode(_checked)}
+            onCheckedChange={handleOnDesignModeChange}
           />
           <Label className="text-muted-foreground" htmlFor="design-mode">
-            Design Mode
+            Customize
           </Label>
         </div>
         <Categories data={categories} isDesignMode={isDesignMode} />

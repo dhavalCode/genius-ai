@@ -1,6 +1,6 @@
 export const NEXT_PUBLIC_WEBAPP_URL = process.env.NEXT_PUBLIC_APP_URL;
 
-export const CATEGORIES_DATA = [
+export const CATEGORY_LIST = [
   {
     name: "Famous People",
     brains: [

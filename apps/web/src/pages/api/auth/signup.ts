@@ -3,6 +3,7 @@ import prisma from "@genius-ai/prisma";
 import { hashPassword } from "@genius-ai/lib/auth";
 import { defaultHandler, defaultResponder } from "@genius-ai/lib/server";
 import { SignupInputType, signupSchema } from "@genius-ai/lib/validations";
+import { generateDefaultBrains } from "@genius-ai/lib/api";
 
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
   const validated = signupSchema.safeParse(req.body);
@@ -46,22 +47,8 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  // create one default category
-
-  const found = await prisma.category.findFirst({
-    where: {
-      userId: user.id,
-    },
-  });
-
-  if (!found) {
-    await prisma.category.create({
-      data: {
-        name: "General",
-        userId: user.id,
-      },
-    });
-  }
+  // check and create default brains
+  await generateDefaultBrains(user.id);
 
   res.status(201).end();
 }

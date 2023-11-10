@@ -53,6 +53,12 @@ export const ProModal = () => {
             Create
             <span className="text-sky-500 mx-1 font-medium">Custom AI</span>
             Brains!
+            <br />
+            Create, manage{" "}
+            <span className="text-sky-500 mx-1 font-medium">
+              Custom Categories
+            </span>{" "}
+            and many more!
           </DialogDescription>
         </DialogHeader>
         <Separator />
