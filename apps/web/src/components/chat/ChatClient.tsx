@@ -15,9 +15,10 @@ interface ChatClientProps {
       messages: number;
     };
   };
+  isPro: boolean;
 }
 
-const ChatClient = ({ brain }: ChatClientProps) => {
+const ChatClient = ({ brain, isPro }: ChatClientProps) => {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatMessageProps[]>(brain.messages);
 
@@ -49,8 +50,8 @@ const ChatClient = ({ brain }: ChatClientProps) => {
   };
 
   return (
-    <div className="flex flex-col h-full p-4 space-y-2">
-      <ChatHeader brain={brain} />
+    <div className="flex flex-col h-screen max-h-screen p-4 space-y-2">
+      <ChatHeader brain={brain} isPro={isPro} />
       <ChatMessages brain={brain} isLoading={isLoading} messages={messages} />
       <ChatForm
         isLoading={isLoading}

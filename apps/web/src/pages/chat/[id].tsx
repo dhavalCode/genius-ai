@@ -3,17 +3,19 @@ import { getUserFromToken } from "@genius-ai/lib/server";
 import ChatClient from "@/components/chat/ChatClient";
 import {
   BrainWithMessagesType,
+  checkSubscription,
   getBrainDataWithMessages,
 } from "@genius-ai/lib/query";
 
 interface ChatIdPageProps {
   initialData: BrainWithMessagesType;
+  isPro: boolean;
 }
 
 const ChatIdPage = (props: ChatIdPageProps) => {
-  const { initialData } = props;
+  const { initialData, isPro } = props;
 
-  return <ChatClient brain={initialData} />;
+  return <ChatClient brain={initialData} isPro={isPro} />;
 };
 
 export async function getServerSideProps(context: any) {
@@ -52,7 +54,9 @@ export async function getServerSideProps(context: any) {
     };
   }
 
-  return { props: { initialData: JSON.parse(JSON.stringify(initialData)) } };
+  const isPro = await checkSubscription(context.req, context.res);
+
+  return { props: { initialData: JSON.parse(JSON.stringify(initialData)), isPro } };
 }
 
 export default ChatIdPage;

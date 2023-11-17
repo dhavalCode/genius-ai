@@ -1,11 +1,5 @@
 import axios from "axios";
-import {
-  ChevronLeft,
-  Edit,
-  MessagesSquare,
-  MoreVertical,
-  Trash,
-} from "lucide-react";
+import { ChevronLeft, Edit, MoreVertical, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Brain, Message } from "@prisma/client";
 
@@ -18,7 +12,7 @@ import {
 } from "@genius-ai/ui";
 import BotAvatar from "./BotAvatar";
 
-import { useToast } from "@genius-ai/lib/hooks";
+import { useProModal, useToast } from "@genius-ai/lib/hooks";
 
 interface ChatHeaderProps {
   brain: Brain & {
@@ -27,13 +21,21 @@ interface ChatHeaderProps {
       messages: number;
     };
   };
+  isPro: boolean;
 }
 
-const ChatHeader = ({ brain }: ChatHeaderProps) => {
+const ChatHeader = ({ brain, isPro }: ChatHeaderProps) => {
   const router = useRouter();
   const { toast } = useToast();
 
+  const { onOpen: onProModalOpen } = useProModal();
+
   const onDelete = async () => {
+    if (!isPro) {
+      onProModalOpen();
+      return;
+    }
+
     try {
       await axios.delete(`/api/brain/${brain.id}`);
       toast({
@@ -47,6 +49,15 @@ const ChatHeader = ({ brain }: ChatHeaderProps) => {
         description: "Something went wrong.",
       });
     }
+  };
+
+  const onEdit = () => {
+    if (!isPro) {
+      onProModalOpen();
+      return;
+    }
+
+    router.push(`/brain/${brain.id}`);
   };
 
   return (
@@ -70,11 +81,11 @@ const ChatHeader = ({ brain }: ChatHeaderProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => router.push(`/brain/${brain.id}`)}>
+          <DropdownMenuItem onClick={onEdit}>
             <Edit className="w-4 h-4 mr-2" />
             Edit
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onDelete}>
+          <DropdownMenuItem onClick={onDelete} className="text-destructive">
             <Trash className="w-4 h-4 mr-2" />
             Delete
           </DropdownMenuItem>

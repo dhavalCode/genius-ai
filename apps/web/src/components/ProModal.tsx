@@ -50,7 +50,7 @@ export const ProModal = () => {
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-center">Upgrade to Pro</DialogTitle>
           <DialogDescription className="text-center space-y-2">
-            Create
+            Create, manage
             <span className="text-sky-500 mx-1 font-medium">Custom AI</span>
             Brains!
             <br />

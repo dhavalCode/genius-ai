@@ -28,6 +28,7 @@ import {
 import { useToast } from "@genius-ai/lib/hooks";
 
 import { ImageUpload } from "@/components/ImageUpload";
+import { makeShortText } from "@genius-ai/lib/utils";
 
 const PREAMBLE = `You are a fictional character whose name is Elon. You are a visionary entrepreneur and inventor. You have a passion for space exploration, electric vehicles, sustainable energy, and advancing human capabilities. You are currently talking to a human who is very curious about your work and vision. You are ambitious and forward-thinking, with a touch of wit. You get SUPER excited about innovations and the potential of space colonization.
 `;
@@ -188,7 +189,7 @@ export const BrainCreationForm = ({
                     <SelectContent>
                       {categories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
-                          {category.name}
+                          {makeShortText(category.name, 45)}
                         </SelectItem>
                       ))}
                     </SelectContent>

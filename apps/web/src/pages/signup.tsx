@@ -196,8 +196,8 @@ export default function Signup(props: { source: string }) {
                 </Button>
 
                 <div className="inline-flex items-center justify-center w-full">
-                  <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
-                  <span className="absolute px-2 opacity-75 bg-white dark:bg-gray-800 text-gray-900 -translate-x-1/2 left-1/2 dark:text-white">
+                  <hr className="w-full h-px my-2 border-0 bg-slate-300 dark:bg-gray-700" />
+                  <span className="absolute px-2 opacity-75 bg-slate-100 dark:bg-gray-800 text-gray-900 -translate-x-1/2 left-1/2 dark:text-white">
                     Or continue with
                   </span>
                 </div>

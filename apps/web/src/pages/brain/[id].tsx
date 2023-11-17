@@ -47,12 +47,6 @@ export async function getServerSideProps(context: any) {
   try {
     categories = await getCategories(context.req, context.res);
     initialData = await getBrainData(brainId, context.req, context.res);
-    if (!initialData) {
-      initialData = JSON.parse(JSON.stringify(initialData));
-    }
-    if (categories.length > 0) {
-      categories = JSON.parse(JSON.stringify(categories));
-    }
   } catch (error) {
     categories = [];
     initialData = null;
@@ -60,7 +54,13 @@ export async function getServerSideProps(context: any) {
 
   const isPro = await checkSubscription(context.req, context.res);
 
-  return { props: { categories, initialData, isPro } };
+  return {
+    props: {
+      categories: JSON.parse(JSON.stringify(categories)),
+      initialData: JSON.parse(JSON.stringify(initialData)),
+      isPro,
+    },
+  };
 }
 
 export default BrainIdPage;

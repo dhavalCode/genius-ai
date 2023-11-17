@@ -7,7 +7,7 @@ const UserAvatar = () => {
   const { image, email } = session?.user || { image: "", email: "" };
 
   return (
-    <Avatar className="h-12 w-12">
+    <Avatar className="h-11 w-11">
       {image ? (
         <AvatarImage src={image ?? ""} />
       ) : (
