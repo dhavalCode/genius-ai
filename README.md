@@ -14,7 +14,7 @@ Check out our video showcasing GeniusAI in action:
 
 ## Experience GeniusAI Live 🚀
 
-🔗 [genius.ai.dhavalcode.com](https://genius.ai.dhavalcode.com)
+ [genius.ai.dhavalcode.com](https://genius.ai.dhavalcode.com)
 
 ## Built with Cutting-Edge Technologies 🔥
 
