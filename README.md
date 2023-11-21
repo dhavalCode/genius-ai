@@ -1,81 +1,72 @@
-# Turborepo starter
+## GeniusAI - Personalized AI Companions 🧠
 
-This is an official starter Turborepo.
+***
 
-## Using this example
+GeniusAI welcomes you to a world of personalized AI companions! Using OpenAI's powerful GPT model, our platform lets you chat with different personas, making conversations engaging and interactive. Explore diverse personalities and enjoy an innovative way to connect and learn through dynamic interactions.
 
-Run the following command:
+***
 
-```sh
-npx create-turbo@latest
+## Showcase 
+
+Check out our video showcasing GeniusAI in action:
+
+[![GeniusAI Video Showcase](https://img.youtube.com/vi/kTcLKJZzsvc/0.jpg)](https://youtu.be/kTcLKJZzsvc)
+
+## Experience GeniusAI Live 🚀
+
+🔗 [genius.ai.dhavalcode.com](https://genius.ai.dhavalcode.com)
+
+## Built with Cutting-Edge Technologies 🔥
+
+GeniusAI is powered by a robust tech stack and organized in a Mono Repo style for seamless development:
+
+- **Turbo Repo**
+- **Generative AI**
+- **Next.js**
+- **Typescript**
+- **LangChain JS**
+- **Pinecone Vector DB**
+- **Upstash Redis**
+- **Replicate**
+- **Stripe**
+- **Next Auth**
+- **Social Logins (Github & Google)**
+- **Prisma**
+- **PostgreSQL**
+- **Shadcn UI**
+- **Tailwind CSS**
+- **Zod Validation Schema**
+- **React Hook Form**
+- **Cloudinary**
+
+## Getting Started
+
+To dive into GeniusAI and explore its capabilities:
+
+```bash
+# Clone this repository
+git clone https://github.com/dhavalCode/genius-ai.git
+
+# Navigate to the repository
+cd genius-ai
+
+# Linux / Windows Environment Setup
+cp .env.example .env # Linux
+copy .env.example .env # Windows
+
+# Install required dependencies
+npm install
+
+# Start a local development server
+npm run dev
 ```
 
-## What's inside?
+## For the Future
 
-This Turborepo includes the following packages/apps:
+If you want to add more, Please don't hesitate to open a [pull request](https://github.com/dhavalCode/genius-ai/pulls).
 
-### Apps and Packages
+## 👋 Get in Touch
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+[![Twitter Follow](https://img.shields.io/twitter/follow/dhavalcode?style=social)](https://twitter.com/dhavalCode)
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dhavalcode)
