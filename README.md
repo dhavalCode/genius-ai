@@ -2,7 +2,7 @@
 
 ***
 
-GeniusAI welcomes you to a world of personalized AI companions! Using OpenAI's powerful GPT model, our platform lets you chat with different personas, making conversations engaging and interactive. Explore diverse personalities and enjoy an innovative way to connect and learn through dynamic interactions.
+GeniusAI welcomes you to a world of personalized AI companions! Using Llama 2 13B powerful model, our platform lets you chat with different personas, making conversations engaging and interactive. Explore diverse personalities and enjoy an innovative way to connect and learn through dynamic interactions.
 
 ***
 
